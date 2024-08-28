@@ -15,11 +15,19 @@ class BrandController extends Controller
         return response()->json(Brand::all(),200);
     }
 
+    public function welcome()
+    {
+        $page_title = 'Welcome';
+        return view('welcome', compact('page_title'));
+    }
+
     // Get a single brand
     public function show($id)
     {
         return Brand::findOrFail($id);
     }
+
+    
 
     // Create a new brand
     public function store(Request $request)

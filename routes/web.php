@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\BrandController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [BrandController::class, 'welcome']);
