@@ -15,3 +15,5 @@ Route::post('/brands', [BrandController::class, 'store']);
 Route::put('/brands/{id}', [BrandController::class, 'update']);
 Route::delete('/brands/{id}', [BrandController::class, 'destroy']);
 Route::get('/toplist', [BrandController::class, 'getToplistByCountry']);
+
+Route::post('/addcountrybrand', [BrandController::class, 'addcountrybrand']);

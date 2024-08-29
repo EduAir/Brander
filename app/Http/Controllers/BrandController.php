@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -10,9 +11,26 @@ use Illuminate\Support\Facades\Storage;
 class BrandController extends Controller
 {
     // Get all brands
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Brand::all(),200);
+        $country = $request->header('CF-IPCountry', 'default');
+
+        if($country=='default'){
+
+            return response()->json(Brand::inRandomOrder()->get(),200);
+        }else{
+
+            $brands = Country::where('code', $country)
+                        ->with('brand')
+                        ->get()
+                        ->pluck('brand')  // Recovers brands only
+                        ->filter()        // Filters out null elements
+                        ->sortByDesc('rating') // Sort by "rating" descending order
+                        ->values();       // Reindex the collection
+
+            return response()->json($brands,200);
+        }
+        
     }
 
     public function welcome()
@@ -27,7 +45,34 @@ class BrandController extends Controller
         return Brand::findOrFail($id);
     }
 
-    
+    // add country
+    public function addcountrybrand(Request $request)
+    {
+       $validator = Validator::make($request->all(), [
+            'country_code' => 'required|string|max:5',
+            'brand_id' => 'required|integer|min:1',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        
+        if(Country::where('code',$request->country_code)->where('brand_id',$request->brand_id)->exists()){
+
+            return response()->json(['message'=>'This brand has been already set to this country'], 422);
+        }else{
+
+            $this_insertion = Country::create([
+                'code'=>$request->country_code,
+                'brand_id'=>$request->brand_id
+            ]);
+
+            return response()->json(['message'=>'inserted','id'=>$this_insertion->id], 201);
+        }
+
+       
+    }
 
     // Create a new brand
     public function store(Request $request)
