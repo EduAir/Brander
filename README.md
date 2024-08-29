@@ -1,67 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Brand Management CRUD Application
 
-## About Laravel
+This application is a CRUD system developed with Laravel to manage a list of brands. The application allows creating, reading, updating, and deleting brands, as well as sorting them based on specific criteria, such as rating. It also supports image uploads for each brand and displays brand lists based on geolocation.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- **Complete CRUD**: Manage brands with create, read, update, and delete operations.
+- **Data Validation**: Ensure data consistency with input validation.
+- **Image Upload**: Users can upload images for brands.
+- **Geolocation**: Configure brand lists based on the user's country, determined by the `CF-IPCountry` header.
+- **Rating Sorting**: Brands can be sorted by their rating in descending order.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Prerequisites
 
-## Learning Laravel
+- PHP 8.0 or higher
+- Composer
+- MySQL or another compatible database
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. Clone the repository
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/EduAir/Brander.git
+cd brands-crud
+```
 
-## Laravel Sponsors
+### 2. Install dependencies
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Install PHP dependencies via Composer:
 
-### Premium Partners
+```bash
+composer install
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 3. Configure the environment
 
-## Contributing
+Copy the `.env.example` file to `.env` and configure your environment variables, especially the database connection:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+cp .env.example .env
+```
 
-## Code of Conduct
+Generate the Laravel application key:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+### 4. Set up the database
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Run the migrations to create the necessary tables:
 
-## License
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# Brander" 
+### 5. Create a symbolic link for storage
+
+Create a symbolic link to make the image storage folder publicly accessible:
+
+```bash
+php artisan storage:link
+```
+
+### 6. Start the application
+
+You can start the application using one of the following methods:
+
+#### Method 1: Laravel Server
+
+```bash
+php artisan serve
+```
+
+#### Method 2: Docker
+
+I have an issue on my windows machine in other to dockerise the project . I hope that it won't be fatal for me :(
+
+
+## Usage
+
+### API Endpoints
+
+- `GET /api/brands`: Retrieve the list of all brands.
+- `GET /api/brands/{id}`: Retrieve a specific brand by its ID.
+- `POST /api/brands`: Create a new brand. Required fields are `brand_name`, `brand_image` (file), and `rating`.
+- `PUT /api/brands/{id}`: Update an existing brand by its ID.
+- `DELETE /api/brands/{id}`: Delete a brand by its ID.
+- `GET /api/toplist`: Retrieve a list of brands based on the user's geolocation.
+
+Click on the link Bellow for more details : [here](https://documenter.getpostman.com/view/6223339/2sAXjJ7Yt7)
+
+
+## Testing
+
+You can test the application using tools like Postman to interact with the API endpoints. Ensure that POST requests include the required fields and files for image uploads.
+
